@@ -2,25 +2,47 @@
 //const pokemonCount = 156;
 var pokedex = {}; // {1 : {"name" : "bulbasaur", "img" : url, "type" : ["grass", "poison"], "desc" : "..."}}
 
-window.onload = async function() {
+// window.onload = async function() {
+//     //getPokemon(494);
+//     const start = 494;
+//     const count = 156;
+
+//     for (let i = start; i < start + count; i++) {
+//         await getPokemon(i);
+//         let pokemon = document.createElement("div");
+//         pokemon.id = i;
+//         pokemon.innerText = i.toString() + ". " + pokedex[i]["name"].toUpperCase();
+//         pokemon.classList.add("pokemon-name");
+//         pokemon.addEventListener("click", updatePokemon);
+//         this.document.getElementById("pokemon-list").append(pokemon);
+//     }
+
+//     document.getElementById("pokemon-desc")
+
+//     console.log(pokedex);
+// }
+const promises = [];
+window.addEventListener("load", async function() {
     //getPokemon(494);
     const start = 494;
     const count = 156;
-
     for (let i = start; i < start + count; i++) {
-        await getPokemon(i);
+        try {
+        promises.push(getPokemon(i));
         let pokemon = document.createElement("div");
         pokemon.id = i;
         pokemon.innerText = i.toString() + ". " + pokedex[i]["name"].toUpperCase();
-        pokemon.classList.add("pokemon-name");
-        pokemon.addEventListener("click", updatePokemon);
-        this.document.getElementById("pokemon-list").append(pokemon);
+        } catch (error) {
+            console.error(`Error fetching data for pokemon ${i}:`, error);
+            // Handle the error here, e.g. log it, display an error message, etc.
+        }
     }
 
-    document.getElementById("pokemon-description").innerText = pokedex[494]["desc"];
+    await Promise.all(promises);
 
     console.log(pokedex);
-}
+})
+
 
 async function getPokemon(num) {
     let url = "https://pokeapi.co/api/v2/pokemon/" + num.toString();
