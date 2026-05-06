@@ -18,6 +18,7 @@ window.onload = async function() {
     }
 
     document.getElementById("pokemon-desc")
+    document.getElementById("pokemon-abilities")
 
     console.log(pokedex);
 }
@@ -64,6 +65,25 @@ function updatePokemon() {
         type.classList.add("type-box");
         type.classList.add(types[i]["type"]["name"]); //adds background color and font color
         typesDiv.append(type);
+    }
+
+    //clear the previous ability
+    let abilitiesDiv = document.getElementById("pokemon-abilities");
+    while (abilitiesDiv.firstChild) {
+        abilitiesDiv.firstChild.remove();
+    }
+
+    // Display abilities
+    let abilities = pokedex[this.id]["abilities"];
+    for (let i = 0; i < abilities.length; i++) {
+        let ability = document.createElement("span");
+        let name = abilities[i]["ability"]["name"].toUpperCase();
+        let isHidden = abilities[i]["is_hidden"];
+
+        ability.innerText = isHidden ? `${name} (Hidden)` : name;
+        ability.classList.add("ability-box");
+        if (isHidden) ability.classList.add("hidden-ability"); // style differently
+        abilitiesDiv.append(ability);
     }
 
     //update description
